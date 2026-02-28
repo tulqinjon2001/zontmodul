@@ -1,0 +1,20 @@
+/* App-specific styles */
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal overflow */
+body {
+  overflow-x: hidden;
+}
+
+/* Pin spacer fix for GSAP */
+.pin-spacer {
+  pointer-events: none !important;
+}
+
+.pin-spacer > * {
+  pointer-events: auto !important;
+}
