@@ -1,15 +1,16 @@
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Instagram, MessageCircle, Phone } from 'lucide-react';
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { Instagram, MessageCircle, Phone } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 interface FooterProps {
   className?: string;
 }
 
-const Footer = ({ className = '' }: FooterProps) => {
+const Footer = ({ className = "" }: FooterProps) => {
   const footerRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<HTMLDivElement>(null);
@@ -27,18 +28,18 @@ const Footer = ({ className = '' }: FooterProps) => {
           y: 0,
           opacity: 1,
           duration: 0.6,
-          ease: 'power2.out',
+          ease: "power2.out",
           scrollTrigger: {
             trigger: footer,
-            start: 'top 85%',
-            end: 'top 60%',
+            start: "top 85%",
+            end: "top 60%",
             scrub: 1,
           },
-        }
+        },
       );
 
       // Links animation
-      const links = linksRef.current?.querySelectorAll('a');
+      const links = linksRef.current?.querySelectorAll("a");
       if (links) {
         gsap.fromTo(
           links,
@@ -48,14 +49,14 @@ const Footer = ({ className = '' }: FooterProps) => {
             opacity: 1,
             duration: 0.5,
             stagger: 0.06,
-            ease: 'power2.out',
+            ease: "power2.out",
             scrollTrigger: {
               trigger: footer,
-              start: 'top 80%',
-              end: 'top 55%',
+              start: "top 80%",
+              end: "top 55%",
               scrub: 1,
             },
-          }
+          },
         );
       }
     }, footer);
@@ -66,20 +67,27 @@ const Footer = ({ className = '' }: FooterProps) => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      gsap.to(window, {
+        duration: 0.2,
+        scrollTo: { y: element, autoKill: true },
+      });
     }
   };
 
   const navLinks = [
-    { label: 'Xizmatlar', id: 'services' },
-    { label: 'Ishlar', id: 'works' },
-    { label: 'Bog‘lanish', id: 'contact' },
+    { label: "Xizmatlar", id: "services" },
+    { label: "Ishlar", id: "works" },
+    { label: "Bog‘lanish", id: "contact" },
   ];
 
   const socialLinks = [
-    { icon: MessageCircle, label: 'Telegram', href: 'https://t.me/zontmodul' },
-    { icon: Phone, label: 'WhatsApp', href: 'https://wa.me/998332144545' },
-    { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/zontmodul' },
+    { icon: MessageCircle, label: "Telegram", href: "https://t.me/zontmodul" },
+    { icon: Phone, label: "WhatsApp", href: "https://wa.me/998332144545" },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      href: "https://instagram.com/zontmodul",
+    },
   ];
 
   return (

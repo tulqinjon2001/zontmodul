@@ -1,15 +1,16 @@
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Phone } from 'lucide-react';
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { ArrowRight, Phone } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 interface HeroSectionProps {
   className?: string;
 }
 
-const HeroSection = ({ className = '' }: HeroSectionProps) => {
+const HeroSection = ({ className = "" }: HeroSectionProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -25,32 +26,32 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
 
     const ctx = gsap.context(() => {
       // Auto-play entrance animation on page load
-      const loadTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const loadTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       // Background entrance
       loadTl.fromTo(
         bgRef.current,
         { scale: 1.08, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.9 },
-        0
+        0,
       );
 
       // Diagonal mask entrance
       loadTl.fromTo(
         maskRef.current,
-        { x: '-60vw', opacity: 0 },
+        { x: "-60vw", opacity: 0 },
         { x: 0, opacity: 1, duration: 0.8 },
-        0.1
+        0.1,
       );
 
       // Headline word reveal
-      const words = headlineRef.current?.querySelectorAll('.word');
+      const words = headlineRef.current?.querySelectorAll(".word");
       if (words) {
         loadTl.fromTo(
           words,
           { y: 24, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.7, stagger: 0.03 },
-          0.2
+          0.2,
         );
       }
 
@@ -59,7 +60,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         accentLineRef.current,
         { scaleX: 0 },
         { scaleX: 1, duration: 0.5 },
-        0.5
+        0.5,
       );
 
       // Subheadline
@@ -67,7 +68,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         subheadlineRef.current,
         { y: 16, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6 },
-        0.4
+        0.4,
       );
 
       // CTA buttons
@@ -75,7 +76,7 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         ctaRef.current,
         { y: 16, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.5 },
-        0.55
+        0.55,
       );
 
       // Right info
@@ -83,24 +84,34 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
         rightInfoRef.current,
         { x: 20, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.6 },
-        0.5
+        0.5,
       );
 
       // Scroll-driven exit animation
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
+          start: "top top",
+          end: "+=130%",
+          // remove pinning so the section doesn't stick when you scroll slowly
+          pin: false,
+          // use a tight scrub (or true) for immediate response
+          scrub: 0.1,
           onLeaveBack: () => {
             // Reset all elements to visible when scrolling back to top
-            gsap.set([headlineRef.current, subheadlineRef.current, ctaRef.current, rightInfoRef.current], {
-              opacity: 1,
-              x: 0,
-              y: 0,
-            });
+            gsap.set(
+              [
+                headlineRef.current,
+                subheadlineRef.current,
+                ctaRef.current,
+                rightInfoRef.current,
+              ],
+              {
+                opacity: 1,
+                x: 0,
+                y: 0,
+              },
+            );
             gsap.set(maskRef.current, { opacity: 1, x: 0 });
             gsap.set(bgRef.current, { scale: 1, y: 0 });
           },
@@ -114,43 +125,43 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
       scrollTl.fromTo(
         headlineRef.current,
         { x: 0, opacity: 1 },
-        { x: '-18vw', opacity: 0, ease: 'power2.in' },
-        0.7
+        { x: "-18vw", opacity: 0, ease: "power2.in" },
+        0.7,
       );
 
       scrollTl.fromTo(
         subheadlineRef.current,
         { x: 0, opacity: 1 },
-        { x: '-14vw', opacity: 0, ease: 'power2.in' },
-        0.72
+        { x: "-14vw", opacity: 0, ease: "power2.in" },
+        0.72,
       );
 
       scrollTl.fromTo(
         ctaRef.current,
         { x: 0, opacity: 1 },
-        { x: '-12vw', opacity: 0, ease: 'power2.in' },
-        0.74
+        { x: "-12vw", opacity: 0, ease: "power2.in" },
+        0.74,
       );
 
       scrollTl.fromTo(
         maskRef.current,
         { x: 0, opacity: 0.72 },
-        { x: '-40vw', opacity: 0, ease: 'power2.in' },
-        0.7
+        { x: "-40vw", opacity: 0, ease: "power2.in" },
+        0.7,
       );
 
       scrollTl.fromTo(
         bgRef.current,
         { scale: 1, y: 0 },
-        { scale: 1.06, y: '-6vh', ease: 'power2.in' },
-        0.7
+        { scale: 1.06, y: "-6vh", ease: "power2.in" },
+        0.7,
       );
 
       scrollTl.fromTo(
         rightInfoRef.current,
         { x: 0, opacity: 1 },
-        { x: '10vw', opacity: 0, ease: 'power2.in' },
-        0.75
+        { x: "10vw", opacity: 0, ease: "power2.in" },
+        0.75,
       );
     }, section);
 
@@ -160,7 +171,11 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // shorter duration for quicker jump
+      gsap.to(window, {
+        duration: 0.2,
+        scrollTo: { y: element, autoKill: true },
+      });
     }
   };
 
@@ -199,15 +214,15 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
             ref={headlineRef}
             className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]"
           >
-            <span className="word inline-block">MUSTAHKAM</span>{' '}
+            <span className="word inline-block">MUSTAHKAM</span>{" "}
             <span className="word inline-block">TUZILMALAR</span>
           </h1>
-          
+
           {/* Accent Line */}
           <div
             ref={accentLineRef}
             className="accent-line w-24 mt-4 mb-6"
-            style={{ transformOrigin: 'left', transform: 'scaleX(0)' }}
+            style={{ transformOrigin: "left", transform: "scaleX(0)" }}
           />
 
           {/* Subheadline */}
@@ -216,8 +231,8 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
             className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[34vw] lg:max-w-[480px]"
             style={{ opacity: 0 }}
           >
-            ZONT MODUL — sanoat va tijorat obyektlari uchun metall konstruksiyalar, 
-            modul binolar va kosmik karkaslar.
+            ZONT MODUL — sanoat va tijorat obyektlari uchun metall
+            konstruksiyalar, modul binolar va kosmik karkaslar.
           </p>
         </div>
 
@@ -228,14 +243,14 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
           style={{ opacity: 0 }}
         >
           <button
-            onClick={() => scrollToSection('contact')}
+            onClick={() => scrollToSection("contact")}
             className="btn-primary px-6 py-3.5 rounded-sm font-medium flex items-center gap-2"
           >
             <Phone size={18} />
             Zayavka qoldirish
           </button>
           <button
-            onClick={() => scrollToSection('works')}
+            onClick={() => scrollToSection("works")}
             className="btn-secondary px-6 py-3.5 rounded-sm font-medium flex items-center gap-2"
           >
             Ishlar bilan tanishish
@@ -255,25 +270,19 @@ const HeroSection = ({ className = '' }: HeroSectionProps) => {
             <p className="font-mono text-xs text-[#F2B33D] tracking-[0.12em] uppercase mb-1">
               Ishlab chiqarish
             </p>
-            <p className="text-sm text-[#A6AFBF]">
-              Zamonaviy texnologiyalar
-            </p>
+            <p className="text-sm text-[#A6AFBF]">Zamonaviy texnologiyalar</p>
           </div>
           <div className="text-right">
             <p className="font-mono text-xs text-[#F2B33D] tracking-[0.12em] uppercase mb-1">
               Yetkazib berish
             </p>
-            <p className="text-sm text-[#A6AFBF]">
-              O‘zbekiston bo‘ylab
-            </p>
+            <p className="text-sm text-[#A6AFBF]">O‘zbekiston bo‘ylab</p>
           </div>
           <div className="text-right">
             <p className="font-mono text-xs text-[#F2B33D] tracking-[0.12em] uppercase mb-1">
               O‘rnatish
             </p>
-            <p className="text-sm text-[#A6AFBF]">
-              Professional montaj
-            </p>
+            <p className="text-sm text-[#A6AFBF]">Professional montaj</p>
           </div>
         </div>
       </div>

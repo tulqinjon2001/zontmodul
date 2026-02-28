@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 @layer base {
   :root {
@@ -38,17 +38,17 @@
   }
   body {
     @apply bg-[#0B0C0F] text-[#F4F6FA] antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 }
 
 /* Typography */
 .font-display {
-  font-family: 'Sora', sans-serif;
+  font-family: "Sora", sans-serif;
 }
 
 .font-mono {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", monospace;
 }
 
 /* Diagonal mask for sections */
@@ -72,7 +72,7 @@
 /* Yellow accent line */
 .accent-line {
   height: 2px;
-  background-color: #F2B33D;
+  background-color: #f2b33d;
   transform-origin: left;
 }
 
@@ -90,7 +90,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0C0F;
+  background: #0b0c0f;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -103,22 +103,24 @@
 }
 
 /* Form input styles */
-input, textarea {
+input,
+textarea {
   background: rgba(20, 23, 28, 0.8);
   border: 1px solid rgba(166, 175, 191, 0.25);
   transition: all 0.3s ease;
 }
 
-input:focus, textarea:focus {
-  border-color: #F2B33D;
+input:focus,
+textarea:focus {
+  border-color: #f2b33d;
   outline: none;
   box-shadow: 0 0 0 2px rgba(242, 179, 61, 0.15);
 }
 
 /* Button hover effects */
 .btn-primary {
-  background-color: #F2B33D;
-  color: #0B0C0F;
+  background-color: #f2b33d;
+  color: #0b0c0f;
   transition: all 0.3s ease;
 }
 
@@ -129,13 +131,13 @@ input:focus, textarea:focus {
 
 .btn-secondary {
   border: 1px solid rgba(244, 246, 250, 0.3);
-  color: #F4F6FA;
+  color: #f4f6fa;
   transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  border-color: #F2B33D;
-  color: #F2B33D;
+  border-color: #f2b33d;
+  color: #f2b33d;
 }
 
 /* Card styles */
@@ -152,7 +154,12 @@ input:focus, textarea:focus {
 
 /* Work card overlay */
 .work-card-overlay {
-  background: linear-gradient(to top, rgba(11, 12, 15, 0.95) 0%, rgba(11, 12, 15, 0.6) 50%, transparent 100%);
+  background: linear-gradient(
+    to top,
+    rgba(11, 12, 15, 0.95) 0%,
+    rgba(11, 12, 15, 0.6) 50%,
+    transparent 100%
+  );
 }
 
 /* Animation utilities */
@@ -189,14 +196,15 @@ input:focus, textarea:focus {
   }
 }
 
+/* shortened durations for snappier animation */
 .animate-fade-in-up {
-  animation: fadeInUp 0.7s ease-out forwards;
+  animation: fadeInUp 0.35s ease-out forwards;
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.8s ease-out forwards;
+  animation: slideInLeft 0.4s ease-out forwards;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.8s ease-out forwards;
+  animation: slideInRight 0.4s ease-out forwards;
 }
