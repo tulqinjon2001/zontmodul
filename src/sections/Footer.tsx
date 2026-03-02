@@ -1,143 +1,110 @@
-import { useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { Instagram, MessageCircle, Phone } from "lucide-react";
-
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+import { Instagram, MessageCircle, Send } from "lucide-react";
+import FadeUp from "@/components/FadeUp";
 
 interface FooterProps {
   className?: string;
 }
 
 const Footer = ({ className = "" }: FooterProps) => {
-  const footerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const linksRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const footer = footerRef.current;
-    if (!footer) return;
-
-    const ctx = gsap.context(() => {
-      // Logo animation
-      gsap.fromTo(
-        logoRef.current,
-        { y: 12, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: footer,
-            start: "top 85%",
-            end: "top 60%",
-            scrub: 1,
-          },
-        },
-      );
-
-      // Links animation
-      const links = linksRef.current?.querySelectorAll("a");
-      if (links) {
-        gsap.fromTo(
-          links,
-          { y: 8, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.5,
-            stagger: 0.06,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: footer,
-              start: "top 80%",
-              end: "top 55%",
-              scrub: 1,
-            },
-          },
-        );
-      }
-    }, footer);
-
-    return () => ctx.revert();
-  }, []);
-
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      gsap.to(window, {
-        duration: 0.2,
-        scrollTo: { y: element, autoKill: true },
-      });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const navLinks = [
+  const quickLinks = [
+    { label: "Bosh sahifa", id: "hero" },
     { label: "Xizmatlar", id: "services" },
-    { label: "Ishlar", id: "works" },
-    { label: "Bog‘lanish", id: "contact" },
+    { label: "Bajarilgan ishlar", id: "works" },
+    { label: "Bog'lanish", id: "contact" },
   ];
 
   const socialLinks = [
     { icon: MessageCircle, label: "Telegram", href: "https://t.me/zontmodul" },
-    { icon: Phone, label: "WhatsApp", href: "https://wa.me/998332144545" },
     {
       icon: Instagram,
       label: "Instagram",
       href: "https://instagram.com/zontmodul",
     },
+    { icon: Send, label: "WhatsApp", href: "https://wa.me/998332144545" },
   ];
 
   return (
     <footer
-      ref={footerRef}
-      className={`relative bg-[#14171C] py-12 lg:py-16 ${className}`}
+      className={`relative bg-[#0d0f12] border-t border-[#F2B33D]/20 pt-12 pb-6 ${className}`}
     >
-      <div className="relative z-10 px-6 lg:px-[8vw]">
-        <div className="flex flex-col items-center">
-          {/* Logo */}
-          <div ref={logoRef} className="mb-8">
-            <span className="font-mono text-2xl lg:text-3xl tracking-[0.12em] font-medium text-[#F4F6FA]">
-              ZONT MODUL
-            </span>
+      <div className="px-6 lg:px-[8vw] max-w-full">
+        <FadeUp delay={0}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+            {/* Left — Brand */}
+            <div>
+              {/* Logo + Name */}
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src="/logo.png"
+                  alt="ZONT MODUL"
+                  className="h-12 w-12 object-contain"
+                />
+                <span className="font-mono text-lg tracking-[0.12em] font-bold text-[#F4F6FA] uppercase">
+                  ZONT MODUL
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-[#A6AFBF] leading-relaxed max-w-[360px] mb-6">
+                Metall konstruksiyalar, kosmik karkaslar va modul binolar ishlab
+                chiqaruvchi. Loyihadan montajgacha — to'liq siklda xizmat.
+              </p>
+
+              {/* Social Icons */}
+              <div className="flex items-center gap-3">
+                {socialLinks.map(({ icon: Icon, label, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="w-10 h-10 rounded-full border border-[#A6AFBF]/25 flex items-center justify-center text-[#A6AFBF] hover:border-[#F2B33D] hover:text-[#F2B33D] transition-colors duration-300"
+                  >
+                    <Icon size={18} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — Quick Links */}
+            <div className="md:pl-8">
+              <h3 className="font-mono text-xs tracking-[0.18em] uppercase text-[#F2B33D] mb-5">
+                TEZKOR HAVOLALAR
+              </h3>
+              <ul className="space-y-3">
+                {quickLinks.map(({ label, id }) => (
+                  <li key={id}>
+                    <button
+                      onClick={() => scrollToSection(id)}
+                      className="flex items-center gap-2 text-sm text-[#A6AFBF] hover:text-[#F4F6FA] transition-colors duration-200 group"
+                    >
+                      <span className="w-1 h-1 rounded-full bg-[#F2B33D] opacity-60 group-hover:opacity-100 transition-opacity" />
+                      {label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
+        </FadeUp>
 
-          {/* Navigation Links */}
-          <div
-            ref={linksRef}
-            className="flex flex-wrap items-center justify-center gap-6 lg:gap-8 mb-8"
-          >
-            {navLinks.map(({ label, id }) => (
-              <button
-                key={id}
-                onClick={() => scrollToSection(id)}
-                className="font-mono text-sm text-[#A6AFBF] hover:text-[#F4F6FA] tracking-wide uppercase transition-colors"
-              >
-                {label}
-              </button>
-            ))}
-            {socialLinks.map(({ icon: Icon, label, href }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-sm text-[#A6AFBF] hover:text-[#F4F6FA] tracking-wide uppercase transition-colors flex items-center gap-2"
-              >
-                <Icon size={14} />
-                {label}
-              </a>
-            ))}
-          </div>
+        {/* Divider */}
+        <div className="h-px bg-[#A6AFBF]/15 mb-6" />
 
-          {/* Divider */}
-          <div className="w-full max-w-md h-px bg-[#A6AFBF]/20 mb-6" />
-
-          {/* Copyright */}
-          <p className="text-sm text-[#A6AFBF]/70 text-center">
-            © 2026 ZONT MODUL. Barcha huquqlar himoyalangan.
+        {/* Bottom */}
+        <div className="flex flex-col items-center gap-2 text-xs text-center text-[#A6AFBF]/50">
+          <p>© 2026 ZONT MODUL. Barcha huquqlar himoyalangan.</p>
+          <p>
+            <span className="text-[#F2B33D]">Pinmap.uz</span> tomonidan
+            yaratildi
           </p>
         </div>
       </div>

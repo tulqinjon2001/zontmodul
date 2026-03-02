@@ -1,127 +1,70 @@
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { ArrowUpRight } from "lucide-react";
+import FadeUp from "@/components/FadeUp";
 
 interface WorksSectionProps {
   className?: string;
 }
 
-const WorksSection = ({ className = '' }: WorksSectionProps) => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      // Heading animation
-      gsap.fromTo(
-        headingRef.current,
-        { y: 24, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: 'top 75%',
-            end: 'top 45%',
-            scrub: 1,
-          },
-        }
-      );
-
-      // Grid items animation
-      const items = gridRef.current?.querySelectorAll('.work-item');
-      if (items) {
-        gsap.fromTo(
-          items,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: gridRef.current,
-              start: 'top 75%',
-              end: 'top 35%',
-              scrub: 1,
-            },
-          }
-        );
-      }
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
+const WorksSection = ({ className = "" }: WorksSectionProps) => {
   const works = [
     {
-      image: '/work1.jpg',
-      title: 'Sanoat ombori',
-      description: 'Andijon viloyati, 2024',
+      image: "/work1.webp",
+      title: "Sanoat ombori",
+      description: "Andijon viloyati, 2024",
+    },
+    { image: "/work2.webp", title: "Avtosalon", description: "Toshkent, 2024" },
+    {
+      image: "/work3.webp",
+      title: "Sport kompleksi",
+      description: "Farg'ona, 2023",
     },
     {
-      image: '/work2.jpg',
-      title: 'Avtosalon',
-      description: 'Toshkent, 2024',
+      image: "/work4.webp",
+      title: "Modul ofis",
+      description: "Namangan, 2023",
     },
     {
-      image: '/work3.jpg',
-      title: 'Sport kompleksi',
-      description: 'Farg‘ona, 2023',
+      image: "/work5.webp",
+      title: "Ishlab chiqarish sexi",
+      description: "Andijon, 2023",
     },
     {
-      image: '/work4.jpg',
-      title: 'Modul ofis',
-      description: 'Namangan, 2023',
-    },
-    {
-      image: '/work5.jpg',
-      title: 'Ishlab chiqarish sexi',
-      description: 'Andijon, 2023',
-    },
-    {
-      image: '/work6.jpg',
-      title: 'Issiqxona kompleksi',
-      description: 'Sirdaryo, 2022',
+      image: "/work6.webp",
+      title: "Issiqxona kompleksi",
+      description: "Sirdaryo, 2022",
     },
   ];
 
   return (
     <section
-      ref={sectionRef}
       id="works"
       className={`relative bg-[#0B0C0F] py-20 lg:py-28 ${className}`}
     >
       <div className="relative z-10 px-6 lg:px-[8vw]">
         {/* Heading Block */}
-        <div ref={headingRef} className="mb-12 lg:mb-16">
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F6FA] uppercase tracking-tight mb-4">
-            BAJARILGAN ISHLAR
-          </h2>
-          <div className="accent-line w-16 mb-6" />
-          <p className="text-base lg:text-lg text-[#A6AFBF] max-w-[600px]">
-                Bizning loyihalarimiz O‘zbekistonning turli hududlarida muvaffaqiyatli amalga oshirildi.
-          </p>
+        <div className="mb-12 lg:mb-16">
+          <FadeUp delay={0}>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F6FA] uppercase tracking-tight mb-4">
+              BAJARILGAN ISHLAR
+            </h2>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <div className="accent-line w-16 mb-6" />
+          </FadeUp>
+          <FadeUp delay={0.2}>
+            <p className="text-base lg:text-lg text-[#A6AFBF] max-w-[600px]">
+              Bizning loyihalarimiz O'zbekistonning turli hududlarida
+              muvaffaqiyatli amalga oshirildi.
+            </p>
+          </FadeUp>
         </div>
 
-        {/* Works Grid */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {works.map(({ image, title, description }) => (
-            <div
+        {/* Works Grid — row-based stagger */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {works.map(({ image, title, description }, i) => (
+            <FadeUp
               key={title}
+              delay={(i % 3) * 0.15}
               className="work-item group relative aspect-[4/3] overflow-hidden rounded-sm cursor-pointer"
             >
               <img
@@ -142,7 +85,7 @@ const WorksSection = ({ className = '' }: WorksSectionProps) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </FadeUp>
           ))}
         </div>
       </div>

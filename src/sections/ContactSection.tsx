@@ -1,250 +1,275 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Phone, MapPin, Clock, Mail, Send, Instagram, MessageCircle } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useState } from "react";
+import FadeUp from "@/components/FadeUp";
+import {
+  Phone,
+  MapPin,
+  Clock,
+  Mail,
+  Send,
+  CheckCircle2,
+  Loader2,
+} from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+const TG_BOT_TOKEN = import.meta.env.VITE_TG_BOT_TOKEN as string;
+const TG_CHAT_ID = import.meta.env.VITE_TG_CHAT_ID as string;
 
 interface ContactSectionProps {
   className?: string;
 }
 
-const ContactSection = ({ className = '' }: ContactSectionProps) => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLDivElement>(null);
-  const contactRef = useRef<HTMLDivElement>(null);
-  const [showDialog, setShowDialog] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    message: '',
-  });
+const ContactSection = ({ className = "" }: ContactSectionProps) => {
+  const [form, setForm] = useState({ name: "", phone: "", message: "" });
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      // Form column animation
-      gsap.fromTo(
-        formRef.current,
-        { x: '-6vw', opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 70%',
-            end: 'top 30%',
-            scrub: 1,
-          },
-        }
-      );
-
-      // Contact column animation
-      gsap.fromTo(
-        contactRef.current,
-        { x: '6vw', opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.7,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 70%',
-            end: 'top 30%',
-            scrub: 1,
-          },
-        }
-      );
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowDialog(true);
-    setFormData({ name: '', phone: '', message: '' });
+    setStatus("loading");
+
+    const text =
+      `📩 Yangi zayavka — ZONT MODUL\n\n` +
+      `👤 Ism: ${form.name}\n` +
+      `📞 Telefon: ${form.phone}\n` +
+      `💬 Qo'shimcha: ${form.message || "—"}`;
+
+    try {
+      const res = await fetch(
+        `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: TG_CHAT_ID, text }),
+        },
+      );
+      if (!res.ok) throw new Error();
+      setStatus("success");
+      setForm({ name: "", phone: "", message: "" });
+    } catch {
+      setStatus("error");
+    }
   };
 
   const contactInfo = [
     {
-      icon: Phone,
-      label: 'Telefon',
-      value: '+998 33 214 45 45',
-      href: 'tel:+998332144545',
+      icon: MapPin,
+      label: "Manzil",
+      value: "Andijon shahar, Asaka yo'li ko'chasi 124",
+      href: "https://yandex.uz/maps/?text=Andijon+shahar",
     },
     {
-      icon: MapPin,
-      label: 'Manzil',
-      value: 'Andijon shahar, Asaka yo\'li ko\'chasi 124',
-      href: '#',
+      icon: Phone,
+      label: "Telefon",
+      value: "+998 33 214 45 45",
+      href: "tel:+998332144545",
+      highlight: true,
     },
     {
       icon: Clock,
-      label: 'Ish vaqti',
-      value: 'Har kuni 08:00 – 21:00',
-      href: '#',
+      label: "Ish vaqti",
+      value: "Har kuni 08:00 – 21:00",
+      href: "#",
     },
     {
       icon: Mail,
-      label: 'Email',
-      value: 'zontmodul@gmail.com',
-      href: 'mailto:zontmodul@gmail.com',
+      label: "Email",
+      value: "zontmodul@gmail.com",
+      href: "mailto:zontmodul@gmail.com",
     },
-  ];
-
-  const socialLinks = [
-    { icon: MessageCircle, label: 'Telegram', href: 'https://t.me/zontmodul' },
-    { icon: Phone, label: 'WhatsApp', href: 'https://wa.me/998332144545' },
-    { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/zontmodul' },
   ];
 
   return (
     <section
-      ref={sectionRef}
       id="contact"
       className={`relative bg-[#0B0C0F] py-20 lg:py-28 ${className}`}
     >
-      {/* Background texture */}
-      <div className="absolute inset-0 opacity-[0.08]">
+      <div className="absolute inset-0 opacity-[0.05]">
         <img
-          src="/quality_bg.jpg"
+          src="/quality_bg.webp"
           alt=""
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#0B0C0F]/72" />
+        <div className="absolute inset-0 bg-[#0B0C0F]/80" />
       </div>
 
       <div className="relative z-10 px-6 lg:px-[8vw]">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Form Column */}
-          <div ref={formRef}>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F6FA] uppercase tracking-tight mb-4">
-              BOG‘LANISH
+        {/* ── Sarlavha ── */}
+        <FadeUp delay={0}>
+          <div className="text-center mb-10">
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight mb-4">
+              <span className="text-[#F4F6FA]">BOG'LANISH </span>
+              <span className="text-[#F2B33D]">UCHUN MANZIL</span>
             </h2>
-            <div className="accent-line w-16 mb-8" />
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm text-[#A6AFBF] mb-2">Ism</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Ismingizni kiriting"
-                  className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/50"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-[#A6AFBF] mb-2">Telefon</label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="+998 __ ___ __ __"
-                  className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/50"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-[#A6AFBF] mb-2">Xabar</label>
-                <textarea
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Xabaringizni yozing..."
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/50 resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn-primary w-full px-6 py-4 rounded-sm font-medium flex items-center justify-center gap-2"
-              >
-                <Send size={18} />
-                Yuborish
-              </button>
-            </form>
+            <p className="text-[#A6AFBF] text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
+              Ma'lumotlarimizni saqlab qo'ying, siz uchun qulay vaqtda
+              qo'ng'iroq qilishimiz mumkin.
+            </p>
           </div>
+        </FadeUp>
 
-          {/* Contact Column */}
-          <div ref={contactRef} className="lg:pt-16">
-            <div className="space-y-6">
-              {contactInfo.map(({ icon: Icon, label, value, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="flex items-start gap-4 group"
+        {/* ── Zayavka formasi (markazda) ── */}
+        <FadeUp delay={0.15}>
+          <div className="max-w-2xl mx-auto mb-12 bg-[#14171C] border border-[#A6AFBF]/15 rounded-sm p-8">
+            <h3 className="font-mono text-xs tracking-[0.18em] uppercase text-[#F2B33D] mb-2">
+              ZAYAVKA QOLDIRISH
+            </h3>
+            <div className="accent-line w-12 mb-6" />
+
+            {status === "success" ? (
+              <div className="flex flex-col items-center gap-3 py-6 text-center">
+                <CheckCircle2 size={48} className="text-[#F2B33D]" />
+                <p className="text-[#F4F6FA] font-medium text-lg">
+                  Zayavkangiz qabul qilindi!
+                </p>
+                <p className="text-[#A6AFBF] text-sm">
+                  Tez orada siz bilan bog'lanamiz.
+                </p>
+                <button
+                  onClick={() => setStatus("idle")}
+                  className="mt-2 text-sm text-[#F2B33D] underline underline-offset-2"
                 >
-                  <div className="w-12 h-12 bg-[#14171C] border border-[#A6AFBF]/25 rounded-sm flex items-center justify-center flex-shrink-0 group-hover:border-[#F2B33D]/40 transition-colors">
-                    <Icon size={20} className="text-[#F2B33D]" />
+                  Yana yuborish
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-[#A6AFBF] mb-1.5 uppercase tracking-wide">
+                      Ism *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) =>
+                        setForm({ ...form, name: e.target.value })
+                      }
+                      placeholder="Ismingizni kiriting"
+                      className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/40 text-sm"
+                    />
                   </div>
                   <div>
-                    <p className="font-mono text-xs text-[#A6AFBF] tracking-wide uppercase mb-1">
-                      {label}
-                    </p>
-                    <p className="text-[#F4F6FA] group-hover:text-[#F2B33D] transition-colors">
-                      {value}
-                    </p>
+                    <label className="block text-xs text-[#A6AFBF] mb-1.5 uppercase tracking-wide">
+                      Telefon *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm({ ...form, phone: e.target.value })
+                      }
+                      placeholder="+998 __ ___ __ __"
+                      className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/40 text-sm"
+                    />
                   </div>
-                </a>
-              ))}
-            </div>
+                </div>
 
-            {/* Social Links */}
-            <div className="mt-10 pt-8 border-t border-[#A6AFBF]/20">
-              <p className="font-mono text-xs text-[#A6AFBF] tracking-wide uppercase mb-4">
-                Ijtimoiy tarmoqlar
+                <div>
+                  <label className="block text-xs text-[#A6AFBF] mb-1.5 uppercase tracking-wide">
+                    Qo'shimcha ma'lumot
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={form.message}
+                    onChange={(e) =>
+                      setForm({ ...form, message: e.target.value })
+                    }
+                    placeholder="Loyiha haqida qisqacha ma'lumot..."
+                    className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/40 text-sm resize-none"
+                  />
+                </div>
+
+                {status === "error" && (
+                  <p className="text-red-400 text-sm">
+                    Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="btn-primary w-full py-3.5 rounded-sm font-medium flex items-center justify-center gap-2 disabled:opacity-60"
+                >
+                  {status === "loading" ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <Send size={18} />
+                  )}
+                  {status === "loading"
+                    ? "Yuborilmoqda..."
+                    : "Zayavka Qoldirish"}
+                </button>
+              </form>
+            )}
+          </div>
+        </FadeUp>
+
+        {/* ── Kontakt + Xarita ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Kontakt karta */}
+          <FadeUp delay={0.2}>
+            <div className="bg-[#14171C] border border-[#A6AFBF]/15 rounded-sm p-8 h-full">
+              <h3 className="font-mono text-xs tracking-[0.18em] uppercase text-[#F2B33D] mb-2">
+                KONTAKT MA'LUMOTLAR
+              </h3>
+              <div className="accent-line w-12 mb-6" />
+              <p className="text-sm text-[#A6AFBF] mb-8 leading-relaxed">
+                Konstruksiya buyurtma qilish yoki savol berish uchun quyidagi
+                ma'lumotlar orqali bog'lanishingiz mumkin.
               </p>
-              <div className="flex items-center gap-3">
-                {socialLinks.map(({ icon: Icon, label, href }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-12 h-12 bg-[#14171C] border border-[#A6AFBF]/25 rounded-sm flex items-center justify-center hover:border-[#F2B33D]/40 hover:bg-[#F2B33D]/10 transition-all"
-                    aria-label={label}
-                  >
-                    <Icon size={20} className="text-[#F4F6FA]" />
-                  </a>
-                ))}
+
+              <div className="space-y-5">
+                {contactInfo.map(
+                  ({ icon: Icon, label, value, href, highlight }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-4 group"
+                    >
+                      <div className="w-11 h-11 rounded-full bg-[#F2B33D]/10 border border-[#F2B33D]/30 flex items-center justify-center flex-shrink-0 group-hover:bg-[#F2B33D]/20 transition-colors">
+                        <Icon size={18} className="text-[#F2B33D]" />
+                      </div>
+                      <div>
+                        <p className="font-mono text-[10px] tracking-widest text-[#A6AFBF] uppercase mb-0.5">
+                          {label}
+                        </p>
+                        <p
+                          className={`text-sm font-medium leading-snug transition-colors ${
+                            highlight
+                              ? "text-[#F2B33D]"
+                              : "text-[#F4F6FA] group-hover:text-[#F2B33D]"
+                          }`}
+                        >
+                          {value}
+                        </p>
+                      </div>
+                    </a>
+                  ),
+                )}
               </div>
             </div>
-          </div>
+          </FadeUp>
+
+          {/* Xarita */}
+          <FadeUp delay={0.3}>
+            <div className="rounded-sm overflow-hidden border border-[#A6AFBF]/15 h-[380px] lg:h-full min-h-[360px]">
+              <iframe
+                src="https://yandex.uz/map-widget/v1/?ll=72.3572%2C40.7821&z=14&l=map&pt=72.3572%2C40.7821%2Cpm2rdm&text=Andijon%20shahar%2C%20Asaka%20yo%27li%20ko%27chasi%20124"
+                width="100%"
+                height="100%"
+                style={{ border: 0, display: "block" }}
+                allowFullScreen
+                loading="lazy"
+                title="ZONT MODUL manzili"
+              />
+            </div>
+          </FadeUp>
         </div>
       </div>
-
-      {/* Success Dialog */}
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="bg-[#14171C] border-[#A6AFBF]/25 text-[#F4F6FA]">
-          <DialogHeader>
-            <DialogTitle className="font-display text-xl font-semibold">
-              Rahmat!
-            </DialogTitle>
-            <DialogDescription className="text-[#A6AFBF]">
-              Sizning so‘rovingiz qabul qilindi. Tez orada siz bilan bog‘lanamiz.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="mt-4">
-            <button
-              onClick={() => setShowDialog(false)}
-              className="btn-primary w-full px-6 py-3 rounded-sm font-medium"
-            >
-              Yopish
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };

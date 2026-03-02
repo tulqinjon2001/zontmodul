@@ -1,93 +1,50 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { lazy, Suspense, useEffect } from 'react';
 import Navbar from './sections/Navbar';
 import HeroSection from './sections/HeroSection';
-import SpaceFrameSection from './sections/SpaceFrameSection';
-import ModularSection from './sections/ModularSection';
-import EngineeringSection from './sections/EngineeringSection';
-import ManufacturingSection from './sections/ManufacturingSection';
-import QualitySection from './sections/QualitySection';
-import ServicesSection from './sections/ServicesSection';
-import WorksSection from './sections/WorksSection';
-import ContactSection from './sections/ContactSection';
-import Footer from './sections/Footer';
 import './App.css';
 
-gsap.registerPlugin(ScrollTrigger);
+// Below-fold sections lazily loaded
+const SpaceFrameSection   = lazy(() => import('./sections/SpaceFrameSection'));
+const EngineeringSection  = lazy(() => import('./sections/EngineeringSection'));
+const ManufacturingSection = lazy(() => import('./sections/ManufacturingSection'));
+const QualitySection      = lazy(() => import('./sections/QualitySection'));
+const ServicesSection     = lazy(() => import('./sections/ServicesSection'));
+const WorksSection        = lazy(() => import('./sections/WorksSection'));
+const KatalogSection      = lazy(() => import('./sections/KatalogSection'));
+const ContactSection      = lazy(() => import('./sections/ContactSection'));
+const Footer              = lazy(() => import('./sections/Footer'));
 
 function App() {
-  const mainRef = useRef<HTMLDivElement>(null);
-
+  // Prefetch below-fold chunks after hero is interactive
   useEffect(() => {
-    // Wait for all sections to mount and create their ScrollTriggers
     const timer = setTimeout(() => {
-      const pinned = ScrollTrigger.getAll()
-        .filter(st => st.vars.pin)
-        .sort((a, b) => a.start - b.start);
-      
-      const maxScroll = ScrollTrigger.maxScroll(window);
-      
-      if (!maxScroll || pinned.length === 0) return;
-
-      const pinnedRanges = pinned.map(st => ({
-        start: st.start / maxScroll,
-        end: (st.end ?? st.start) / maxScroll,
-        center: (st.start + ((st.end ?? st.start) - st.start) * 0.5) / maxScroll,
-      }));
-
-      ScrollTrigger.create({
-        snap: {
-          snapTo: (value: number) => {
-            const inPinned = pinnedRanges.some(
-              r => value >= r.start - 0.02 && value <= r.end + 0.02
-            );
-            if (!inPinned) return value;
-
-            const target = pinnedRanges.reduce(
-              (closest, r) =>
-                Math.abs(r.center - value) < Math.abs(closest - value)
-                  ? r.center
-                  : closest,
-              pinnedRanges[0]?.center ?? 0
-            );
-            return target;
-          },
-          duration: { min: 0.15, max: 0.35 },
-          delay: 0,
-          ease: 'power2.out',
-        },
-      });
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-      ScrollTrigger.getAll().forEach(st => st.kill());
-    };
+      import('./sections/SpaceFrameSection');
+      import('./sections/ServicesSection');
+      import('./sections/ContactSection');
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div ref={mainRef} className="relative bg-[#0B0C0F]">
-      {/* Noise overlay */}
+    <div className="relative bg-[#0B0C0F]">
       <div className="noise-overlay" />
-      
-      {/* Navigation */}
       <Navbar />
-      
-      {/* Pinned Sections */}
       <main className="relative">
-        <HeroSection className="z-10" />
-        <SpaceFrameSection className="z-20" />
-        <ModularSection className="z-30" />
-        <EngineeringSection className="z-40" />
-        <ManufacturingSection className="z-50" />
-        <QualitySection className="z-[60]" />
-        
-        {/* Flowing Sections */}
-        <ServicesSection className="z-[70]" />
-        <WorksSection className="z-[80]" />
-        <ContactSection className="z-[90]" />
-        <Footer className="z-[100]" />
+        {/* Hero — immediately loaded */}
+        <HeroSection />
+
+        {/* Rest — lazy loaded */}
+        <Suspense fallback={null}>
+          <SpaceFrameSection />
+          <EngineeringSection />
+          <ManufacturingSection />
+          <QualitySection />
+          <ServicesSection />
+          <WorksSection />
+          <KatalogSection />
+          <ContactSection />
+          <Footer />
+        </Suspense>
       </main>
     </div>
   );

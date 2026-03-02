@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 const Navbar = () => {
-  gsap.registerPlugin(ScrollToPlugin);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -12,7 +9,6 @@ const Navbar = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -20,17 +16,15 @@ const Navbar = () => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      gsap.to(window, {
-        duration: 0.2,
-        scrollTo: { y: element, autoKill: true },
-      });
-      setIsMobileMenuOpen(false);
+      element.scrollIntoView({ behavior: "smooth" });
     }
+    setIsMobileMenuOpen(false);
   };
 
   const navLinks = [
     { label: "Xizmatlar", id: "services" },
     { label: "Ishlar", id: "works" },
+    { label: "Katalog", id: "katalog" },
     { label: "Bog'lanish", id: "contact" },
   ];
 
@@ -43,15 +37,20 @@ const Navbar = () => {
             : "bg-transparent py-5"
         }`}
       >
-        <div className="w-full px-6 lg:px-12 flex items-center justify-between">
+        <div className="w-full px-6 lg:px-[8vw] flex items-center justify-between">
           {/* Logo */}
           <button
-            onClick={() =>
-              gsap.to(window, { duration: 0.4, scrollTo: { y: 0 } })
-            }
-            className="font-mono text-lg tracking-[0.12em] font-medium text-[#F4F6FA] hover:text-[#F2B33D] transition-colors"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            ZONT MODUL
+            <img
+              src="/logo.png"
+              alt="ZONT MODUL"
+              className="h-14 w-14 object-contain"
+            />
+            <span className="font-mono text-lg tracking-[0.12em] font-medium text-[#F4F6FA]">
+              ZONT MODUL
+            </span>
           </button>
 
           {/* Desktop Navigation */}
@@ -69,7 +68,7 @@ const Navbar = () => {
               onClick={() => scrollToSection("contact")}
               className="btn-primary px-5 py-2.5 text-sm font-medium rounded-sm"
             >
-              Zayavka qoldirish
+              Zayavka Qoldirish
             </button>
           </div>
 
@@ -90,6 +89,11 @@ const Navbar = () => {
         }`}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">
+          <img
+            src="/logo.webp"
+            alt="ZONT MODUL"
+            className="h-16 w-16 object-contain rounded-full mb-2"
+          />
           {navLinks.map((link) => (
             <button
               key={link.id}
@@ -103,7 +107,7 @@ const Navbar = () => {
             onClick={() => scrollToSection("contact")}
             className="btn-primary px-8 py-3 text-lg font-medium rounded-sm mt-4"
           >
-            Zayavka qoldirish
+            Zayavka Qoldirish
           </button>
         </div>
       </div>
