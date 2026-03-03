@@ -4,7 +4,7 @@ interface QualitySectionProps {
   className?: string;
 }
 
-const QualitySection = ({ className = '' }: QualitySectionProps) => {
+const QualitySection = ({ className = "" }: QualitySectionProps) => {
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -18,7 +18,7 @@ const QualitySection = ({ className = '' }: QualitySectionProps) => {
       </div>
 
       {/* Diagonal Mask */}
-      <div className="absolute inset-0 bg-[#14171C]/70 diagonal-mask" />
+      <div className="absolute inset-0 bg-[#14171C]/20" />
 
       {/* Content */}
       <div className="section-content relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">

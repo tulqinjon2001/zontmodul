@@ -14,11 +14,11 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
           alt="Space frame structure"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#0B0C0F]/50" />
+        <div className="absolute inset-0 bg-[#0B0C0F]/60" />
       </div>
 
       {/* Diagonal Mask */}
-      <div className="absolute inset-0 bg-[#14171C]/70 diagonal-mask" />
+      <div className="absolute inset-0 bg-[#14171C]/40" />
 
       {/* Content */}
       <div className="section-content relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">

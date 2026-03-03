@@ -2,7 +2,7 @@ interface EngineeringSectionProps {
   className?: string;
 }
 
-const EngineeringSection = ({ className = '' }: EngineeringSectionProps) => {
+const EngineeringSection = ({ className = "" }: EngineeringSectionProps) => {
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -16,7 +16,7 @@ const EngineeringSection = ({ className = '' }: EngineeringSectionProps) => {
       </div>
 
       {/* Diagonal Mask */}
-      <div className="absolute inset-0 bg-[#14171C]/70 diagonal-mask" />
+      <div className="absolute inset-0 bg-[#14171C]/20" />
 
       {/* Content */}
       <div className="section-content relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">

@@ -256,17 +256,15 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
 
           {/* Xarita */}
           <FadeUp delay={0.3}>
-            <div className="rounded-sm overflow-hidden border border-[#A6AFBF]/15 h-[380px] lg:h-full min-h-[360px]">
-              <iframe
-                src="https://yandex.uz/map-widget/v1/?ll=72.3572%2C40.7821&z=14&l=map&pt=72.3572%2C40.7821%2Cpm2rdm&text=Andijon%20shahar%2C%20Asaka%20yo%27li%20ko%27chasi%20124"
-                width="100%"
-                height="100%"
-                style={{ border: 0, display: "block" }}
-                allowFullScreen
-                loading="lazy"
-                title="ZONT MODUL manzili"
-              />
-            </div>
+            <iframe
+              src="https://yandex.ru/map-widget/v1/?ll=72.314337%2C40.713851&mode=search&oid=125406941870&ol=biz&z=17"
+              width="100%"
+              height="400"
+              style={{ border: 0, borderRadius: 12 }}
+              allowFullScreen
+              loading="lazy"
+              title="ZONT MODUL manzili"
+            ></iframe>
           </FadeUp>
         </div>
       </div>
