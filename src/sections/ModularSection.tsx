@@ -17,7 +17,7 @@ const ModularSection = ({ className = "" }: ModularSectionProps) => {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src="/modular_bg.webp"
+          src="/modular_bg.jpg"
           alt="Modular buildings"
           className="w-full h-full object-cover"
         />
@@ -28,7 +28,7 @@ const ModularSection = ({ className = "" }: ModularSectionProps) => {
       <div className="absolute inset-0 bg-[#14171C]/70 diagonal-mask" />
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
+      <div className="section-content relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
         <div className="max-w-[44vw] lg:max-w-[580px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
@@ -49,7 +49,7 @@ const ModularSection = ({ className = "" }: ModularSectionProps) => {
       </div>
 
       {/* Feature Card */}
-      <div className="hidden lg:block absolute right-[8vw] top-1/2 -translate-y-1/2 w-[24vw] max-w-[320px]">
+      <div className="hidden lg:block absolute right-[6vw] top-[26vh] w-[24vw] max-w-[320px]">
         <FadeUp delay={0.3}>
           <div className="bg-[#0B0C0F]/55 border border-[#A6AFBF]/25 p-6">
             <div className="accent-line w-12 mb-6" />

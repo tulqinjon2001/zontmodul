@@ -14,10 +14,9 @@ const ManufacturingSection = ({
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src="/manufacturing_bg.webp"
+          src="/manufacturing_bg.jpg"
           alt="Manufacturing process"
           className="w-full h-full object-cover"
-          loading="lazy"
         />
         <div className="absolute inset-0 bg-[#0B0C0F]/55" />
       </div>
@@ -26,7 +25,7 @@ const ManufacturingSection = ({
       <div className="absolute inset-0 bg-[#14171C]/70 diagonal-mask" />
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
+      <div className="section-content relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
         <div className="max-w-[44vw] lg:max-w-[580px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
@@ -47,7 +46,7 @@ const ManufacturingSection = ({
       </div>
 
       {/* Process List */}
-      <div className="hidden lg:block absolute right-[8vw] top-1/2 -translate-y-1/2 w-[22vw]">
+      <div className="hidden lg:block absolute right-[7vw] top-[36vh] w-[22vw]">
         <div className="space-y-4">
           {processes.map((process, i) => (
             <FadeUp key={process} delay={0.2 + i * 0.1}>

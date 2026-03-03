@@ -10,10 +10,9 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <img
-          src="/spaceframe_bg.webp"
+          src="/spaceframe_bg.jpg"
           alt="Space frame structure"
           className="w-full h-full object-cover"
-          loading="lazy"
         />
         <div className="absolute inset-0 bg-[#0B0C0F]/50" />
       </div>
@@ -22,7 +21,7 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
       <div className="absolute inset-0 bg-[#14171C]/70 diagonal-mask" />
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
+      <div className="section-content relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
         <div className="max-w-[46vw] lg:max-w-[620px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
@@ -59,7 +58,7 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
       </div>
 
       {/* Right Side Supporting Line */}
-      <div className="hidden lg:block absolute right-[8vw] top-1/2 -translate-y-1/2 w-[26vw]">
+      <div className="hidden lg:block absolute right-[7vw] top-[44vh] w-[26vw]">
         <FadeUp delay={0.3}>
           <p className="text-right text-lg text-[#F4F6FA] font-medium">
             Har qanday maydonda tez va yengil yechim.

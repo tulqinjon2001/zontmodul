@@ -26,9 +26,9 @@ const HeroSection = ({ className = "" }: HeroSectionProps) => {
       {/* Diagonal Mask */}
       <div className="absolute inset-0 bg-[#14171C]/72 diagonal-mask" />
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 lg:px-[8vw]">
-        <div className="max-w-[44vw] lg:max-w-[600px]">
+      {/* Content — mobilda navbar ostida, kengroq */}
+      <div className="relative z-10 h-full flex flex-col justify-center px-4 sm:px-6 lg:px-[8vw] pt-36 pb-12 lg:pt-0 lg:pb-0">
+        <div className="w-full max-w-[600px]">
           <FadeUp delay={0}>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
               MUSTAHKAM TUZILMALAR
@@ -40,7 +40,7 @@ const HeroSection = ({ className = "" }: HeroSectionProps) => {
           </FadeUp>
 
           <FadeUp delay={0.25}>
-            <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[34vw] lg:max-w-[480px]">
+            <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-full lg:max-w-[480px]">
               ZONT MODUL — sanoat va tijorat obyektlari uchun metall
               konstruksiyalar, modul binolar va kosmik karkaslar.
             </p>
