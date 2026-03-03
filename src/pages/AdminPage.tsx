@@ -254,7 +254,8 @@ const WorksTab = ({ showToast }: { showToast: (m: string, ok: boolean) => void }
     }
 
     const firstUrl = uploadedUrls[0];
-    const { data: newWork, error: dbErr } = await supabase.from('works').insert({
+    // Supabase jadval tiplari loyihada generate qilinmagan, shuning uchun type assertion
+    const { data: newWork, error: dbErr } = await (supabase.from('works') as any).insert({
       title: form.title,
       description: form.description,
       image_url: firstUrl,
@@ -267,8 +268,8 @@ const WorksTab = ({ showToast }: { showToast: (m: string, ok: boolean) => void }
     }
 
     if (uploadedUrls.length > 0) {
-      const { error: imgErr } = await supabase.from('work_images').insert(
-        uploadedUrls.map((image_url, sort_order) => ({ work_id: newWork.id, image_url, sort_order }))
+      const { error: imgErr } = await (supabase.from('work_images') as any).insert(
+        uploadedUrls.map((image_url, sort_order) => ({ work_id: (newWork as { id: string }).id, image_url, sort_order }))
       );
       if (imgErr) showToast('Rasmlar yozishda xatolik', false);
     }
@@ -314,7 +315,7 @@ const WorksTab = ({ showToast }: { showToast: (m: string, ok: boolean) => void }
         cacheControl: '3600', upsert: true, contentType: file.type,
       });
       if (uploadErr) continue;
-      await supabase.from('work_images').insert({
+      await (supabase.from('work_images') as any).insert({
         work_id: workId,
         image_url: getWorksUrl(name),
         sort_order: startOrder + i,
@@ -327,7 +328,7 @@ const WorksTab = ({ showToast }: { showToast: (m: string, ok: boolean) => void }
   };
 
   const [deletingImageId, setDeletingImageId] = useState<string | null>(null);
-  const delWorkImage = async (workId: string, imageId: string, imageUrl: string) => {
+  const delWorkImage = async (_workId: string, imageId: string, imageUrl: string) => {
     if (!confirm('Ushbu rasmni o\'chirasizmi?')) return;
     setDeletingImageId(imageId);
     const fileName = imageUrl.split('/').pop() ?? '';
@@ -355,7 +356,7 @@ const WorksTab = ({ showToast }: { showToast: (m: string, ok: boolean) => void }
     const newTitle = editTitle.trim();
     const newDesc = editDesc.trim() || '';
     setSaving(editingId);
-    const { data, error } = await supabase.from('works').update({
+    const { data, error } = await (supabase.from('works') as any).update({
       title: newTitle,
       description: newDesc || null,
     }).eq('id', editingId).select('id, title, description, image_url').single();
@@ -365,9 +366,9 @@ const WorksTab = ({ showToast }: { showToast: (m: string, ok: boolean) => void }
       return;
     }
     showToast('Saqlandi', true);
-    // Darhol ro'yxatni yangilash (optimistik)
-    if (data) {
-      setWorks(prev => prev.map(w => w.id === editingId ? { ...w, title: data.title, description: data.description ?? '' } : w));
+    const row = data as { title: string; description: string | null } | null;
+    if (row) {
+      setWorks(prev => prev.map(w => w.id === editingId ? { ...w, title: row.title, description: row.description ?? '' } : w));
     }
     cancelEdit();
     load(); // Serverni sinxronlash
