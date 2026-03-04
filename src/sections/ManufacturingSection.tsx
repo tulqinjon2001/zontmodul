@@ -1,4 +1,5 @@
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 interface ManufacturingSectionProps {
   className?: string;
@@ -7,8 +8,12 @@ interface ManufacturingSectionProps {
 const ManufacturingSection = ({
   className = "",
 }: ManufacturingSectionProps) => {
-  const processes = ["Plazma kesish", "Porshen payvandlash", "Grit blosting"];
-
+  const { t } = useTranslation();
+  const processes = [
+    t("manufacturing.process1"),
+    t("manufacturing.process2"),
+    t("manufacturing.process3"),
+  ];
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -29,7 +34,7 @@ const ManufacturingSection = ({
         <div className="max-w-[44vw] lg:max-w-[580px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
-              ISHLAB CHIQARISH
+              {t("manufacturing.title")}
             </h2>
           </FadeUp>
 
@@ -39,7 +44,7 @@ const ManufacturingSection = ({
 
           <FadeUp delay={0.25}>
             <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[34vw] lg:max-w-[460px]">
-              Zamonaviy uskunalar va tajribali ustalar.
+              {t("manufacturing.desc")}
             </p>
           </FadeUp>
         </div>

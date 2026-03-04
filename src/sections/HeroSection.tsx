@@ -1,5 +1,6 @@
 import { ArrowRight, Phone } from "lucide-react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 const scrollToSection = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -10,6 +11,7 @@ interface HeroSectionProps {
 }
 
 const HeroSection = ({ className = "" }: HeroSectionProps) => {
+  const { t } = useTranslation();
   return (
     <section id="hero" className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -31,7 +33,7 @@ const HeroSection = ({ className = "" }: HeroSectionProps) => {
         <div className="w-full max-w-[600px]">
           <FadeUp delay={0}>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
-              MUSTAHKAM TUZILMALAR
+              {t("hero.title")}
             </h1>
           </FadeUp>
 
@@ -41,8 +43,7 @@ const HeroSection = ({ className = "" }: HeroSectionProps) => {
 
           <FadeUp delay={0.25}>
             <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-full lg:max-w-[480px]">
-              ZONT MODUL — sanoat va tijorat obyektlari uchun metall
-              konstruksiyalar, modul binolar va kosmik karkaslar.
+              {t("hero.subtitle")}
             </p>
           </FadeUp>
         </div>
@@ -54,13 +55,13 @@ const HeroSection = ({ className = "" }: HeroSectionProps) => {
               className="btn-primary px-6 py-3.5 rounded-sm font-medium flex items-center gap-2"
             >
               <Phone size={18} />
-              Zayavka Qoldirish
+              {t("hero.leaveRequest")}
             </button>
             <button
               onClick={() => scrollToSection("works")}
               className="btn-secondary px-6 py-3.5 rounded-sm font-medium flex items-center gap-2"
             >
-              Ishlar bilan tanishish
+              {t("hero.viewWorks")}
               <ArrowRight size={18} />
             </button>
           </div>
@@ -73,21 +74,21 @@ const HeroSection = ({ className = "" }: HeroSectionProps) => {
           <div className="space-y-6">
             <div className="text-right">
               <p className="font-mono text-xs text-[#F2B33D] tracking-[0.12em] uppercase mb-1">
-                Ishlab chiqarish
+                {t("hero.production")}
               </p>
-              <p className="text-sm text-[#A6AFBF]">Zamonaviy texnologiyalar</p>
+              <p className="text-sm text-[#A6AFBF]">{t("hero.productionDesc")}</p>
             </div>
             <div className="text-right">
               <p className="font-mono text-xs text-[#F2B33D] tracking-[0.12em] uppercase mb-1">
-                Yetkazib berish
+                {t("hero.delivery")}
               </p>
-              <p className="text-sm text-[#A6AFBF]">O'zbekiston bo'ylab</p>
+              <p className="text-sm text-[#A6AFBF]">{t("hero.deliveryDesc")}</p>
             </div>
             <div className="text-right">
               <p className="font-mono text-xs text-[#F2B33D] tracking-[0.12em] uppercase mb-1">
-                O'rnatish
+                {t("hero.installation")}
               </p>
-              <p className="text-sm text-[#A6AFBF]">Professional montaj</p>
+              <p className="text-sm text-[#A6AFBF]">{t("hero.installationDesc")}</p>
             </div>
           </div>
         </FadeUp>

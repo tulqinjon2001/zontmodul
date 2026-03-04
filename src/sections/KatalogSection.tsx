@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 import { supabase, BUCKET, getPublicUrl } from "@/lib/supabase";
 
 interface KatalogSectionProps {
@@ -13,6 +14,7 @@ interface Photo {
 }
 
 const KatalogSection = ({ className = "" }: KatalogSectionProps) => {
+  const { t } = useTranslation();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -54,7 +56,7 @@ const KatalogSection = ({ className = "" }: KatalogSectionProps) => {
         <div className="mb-12 lg:mb-16">
           <FadeUp delay={0}>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F6FA] uppercase tracking-tight mb-4">
-              KATALOG
+              {t("katalog.title")}
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
@@ -62,8 +64,7 @@ const KatalogSection = ({ className = "" }: KatalogSectionProps) => {
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="text-base lg:text-lg text-[#A6AFBF] max-w-[600px]">
-              Bizning ishlab chiqargan mahsulotlarimiz va loyihalarimizdan
-              namunalar.
+              {t("katalog.subtitle")}
             </p>
           </FadeUp>
         </div>
@@ -87,7 +88,7 @@ const KatalogSection = ({ className = "" }: KatalogSectionProps) => {
                 >
                   <img
                     src={photo.url}
-                    alt={`Katalog ${i + 1}`}
+                    alt={t("katalog.photoAlt", { num: i + 1 })}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"
                   />

@@ -1,11 +1,13 @@
 import { Instagram, MessageCircle, Send } from "lucide-react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 interface FooterProps {
   className?: string;
 }
 
 const Footer = ({ className = "" }: FooterProps) => {
+  const { t } = useTranslation();
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -14,10 +16,10 @@ const Footer = ({ className = "" }: FooterProps) => {
   };
 
   const quickLinks = [
-    { label: "Bosh sahifa", id: "hero" },
-    { label: "Xizmatlar", id: "services" },
-    { label: "Bajarilgan ishlar", id: "works" },
-    { label: "Bog'lanish", id: "contact" },
+    { labelKey: "footer.home", id: "hero" },
+    { labelKey: "footer.services", id: "services" },
+    { labelKey: "footer.works", id: "works" },
+    { labelKey: "footer.contact", id: "contact" },
   ];
 
   const socialLinks = [
@@ -47,14 +49,13 @@ const Footer = ({ className = "" }: FooterProps) => {
                   className="h-12 w-12 object-contain"
                 />
                 <span className="font-mono text-lg tracking-[0.12em] font-bold text-[#F4F6FA] uppercase">
-                  ZONT MODUL
+                  {t("common.brand")}
                 </span>
               </div>
 
               {/* Description */}
               <p className="text-sm text-[#A6AFBF] leading-relaxed max-w-[360px] mb-6">
-                Metall konstruksiyalar, kosmik karkaslar va modul binolar ishlab
-                chiqaruvchi. Loyihadan montajgacha — to'liq siklda xizmat.
+                {t("footer.description")}
               </p>
 
               {/* Social Icons */}
@@ -77,17 +78,17 @@ const Footer = ({ className = "" }: FooterProps) => {
             {/* Right — Quick Links */}
             <div className="md:pl-8">
               <h3 className="font-mono text-xs tracking-[0.18em] uppercase text-[#F2B33D] mb-5">
-                TEZKOR HAVOLALAR
+                {t("footer.quickLinks")}
               </h3>
               <ul className="space-y-3">
-                {quickLinks.map(({ label, id }) => (
+                {quickLinks.map(({ labelKey, id }) => (
                   <li key={id}>
                     <button
                       onClick={() => scrollToSection(id)}
                       className="flex items-center gap-2 text-sm text-[#A6AFBF] hover:text-[#F4F6FA] transition-colors duration-200 group"
                     >
                       <span className="w-1 h-1 rounded-full bg-[#F2B33D] opacity-60 group-hover:opacity-100 transition-opacity" />
-                      {label}
+                      {t(labelKey)}
                     </button>
                   </li>
                 ))}
@@ -101,10 +102,20 @@ const Footer = ({ className = "" }: FooterProps) => {
 
         {/* Bottom */}
         <div className="flex flex-col items-center gap-2 text-xs text-center text-[#A6AFBF]/50">
-          <p>© 2026 ZONT MODUL. Barcha huquqlar himoyalangan.</p>
+          <p>{t("footer.copyright")}</p>
           <p>
-            <span className="text-[#F2B33D]">Pinmap.uz</span> tomonidan
-            yaratildi
+            {(() => {
+              const text = t("footer.madeBy");
+              const idx = text.indexOf("Pinmap.uz");
+              if (idx === -1) return text;
+              return (
+                <>
+                  {text.slice(0, idx)}
+                  <span className="text-[#F2B33D]">Pinmap.uz</span>
+                  {text.slice(idx + "Pinmap.uz".length)}
+                </>
+              );
+            })()}
           </p>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 import {
   Phone,
   MapPin,
@@ -18,6 +19,7 @@ interface ContactSectionProps {
 }
 
 const ContactSection = ({ className = "" }: ContactSectionProps) => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
@@ -28,10 +30,10 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
     setStatus("loading");
 
     const text =
-      `📩 Yangi zayavka — ZONT MODUL\n\n` +
-      `👤 Ism: ${form.name}\n` +
-      `📞 Telefon: ${form.phone}\n` +
-      `💬 Qo'shimcha: ${form.message || "—"}`;
+      `📩 ${t("contact.formTitle")} — ZONT MODUL\n\n` +
+      `👤 ${t("contact.name").replace(" *", "")}: ${form.name}\n` +
+      `📞 ${t("contact.phoneLabel")}: ${form.phone}\n` +
+      `💬 ${t("contact.message")}: ${form.message || "—"}`;
 
     try {
       const res = await fetch(
@@ -53,27 +55,27 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
   const contactInfo = [
     {
       icon: MapPin,
-      label: "Manzil",
-      value: "Andijon shahar, Asaka yo'li ko'chasi 124",
+      labelKey: "contact.address",
+      valueKey: "contact.addressValue",
       href: "https://yandex.uz/maps/?text=Andijon+shahar",
     },
     {
       icon: Phone,
-      label: "Telefon",
-      value: "+998 33 214 45 45",
+      labelKey: "contact.phoneLabel",
+      valueKey: "contact.phoneValue",
       href: "tel:+998332144545",
       highlight: true,
     },
     {
       icon: Clock,
-      label: "Ish vaqti",
-      value: "Har kuni 08:00 – 21:00",
+      labelKey: "contact.workHours",
+      valueKey: "contact.workHoursValue",
       href: "#",
     },
     {
       icon: Mail,
-      label: "Email",
-      value: "zontmodul@gmail.com",
+      labelKey: "contact.email",
+      valueKey: "contact.emailValue",
       href: "mailto:zontmodul@gmail.com",
     },
   ];
@@ -97,12 +99,11 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
         <FadeUp delay={0}>
           <div className="text-center mb-10">
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight mb-4">
-              <span className="text-[#F4F6FA]">BOG'LANISH </span>
-              <span className="text-[#F2B33D]">UCHUN MANZIL</span>
+              <span className="text-[#F4F6FA]">{t("contact.title")} </span>
+              <span className="text-[#F2B33D]">{t("contact.titleAccent")}</span>
             </h2>
             <p className="text-[#A6AFBF] text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
-              Ma'lumotlarimizni saqlab qo'ying, siz uchun qulay vaqtda
-              qo'ng'iroq qilishimiz mumkin.
+              {t("contact.subtitle")}
             </p>
           </div>
         </FadeUp>
@@ -111,7 +112,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
         <FadeUp delay={0.15}>
           <div className="max-w-2xl mx-auto mb-12 bg-[#14171C] border border-[#A6AFBF]/15 rounded-sm p-8">
             <h3 className="font-mono text-xs tracking-[0.18em] uppercase text-[#F2B33D] mb-2">
-              ZAYAVKA QOLDIRISH
+              {t("contact.formTitle")}
             </h3>
             <div className="accent-line w-12 mb-6" />
 
@@ -119,16 +120,16 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
               <div className="flex flex-col items-center gap-3 py-6 text-center">
                 <CheckCircle2 size={48} className="text-[#F2B33D]" />
                 <p className="text-[#F4F6FA] font-medium text-lg">
-                  Zayavkangiz qabul qilindi!
+                  {t("contact.successTitle")}
                 </p>
                 <p className="text-[#A6AFBF] text-sm">
-                  Tez orada siz bilan bog'lanamiz.
+                  {t("contact.successDesc")}
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
                   className="mt-2 text-sm text-[#F2B33D] underline underline-offset-2"
                 >
-                  Yana yuborish
+                  {t("contact.sendAgain")}
                 </button>
               </div>
             ) : (
@@ -136,7 +137,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs text-[#A6AFBF] mb-1.5 uppercase tracking-wide">
-                      Ism *
+                      {t("contact.name")}
                     </label>
                     <input
                       type="text"
@@ -145,13 +146,13 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                       onChange={(e) =>
                         setForm({ ...form, name: e.target.value })
                       }
-                      placeholder="Ismingizni kiriting"
+                      placeholder={t("contact.namePlaceholder")}
                       className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/40 text-sm"
                     />
                   </div>
                   <div>
                     <label className="block text-xs text-[#A6AFBF] mb-1.5 uppercase tracking-wide">
-                      Telefon *
+                      {t("contact.phone")}
                     </label>
                     <input
                       type="tel"
@@ -160,7 +161,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                       onChange={(e) =>
                         setForm({ ...form, phone: e.target.value })
                       }
-                      placeholder="+998 __ ___ __ __"
+                      placeholder={t("contact.phonePlaceholder")}
                       className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/40 text-sm"
                     />
                   </div>
@@ -168,7 +169,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
 
                 <div>
                   <label className="block text-xs text-[#A6AFBF] mb-1.5 uppercase tracking-wide">
-                    Qo'shimcha ma'lumot
+                    {t("contact.message")}
                   </label>
                   <textarea
                     rows={3}
@@ -176,14 +177,14 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    placeholder="Loyiha haqida qisqacha ma'lumot..."
+                    placeholder={t("contact.messagePlaceholder")}
                     className="w-full px-4 py-3 rounded-sm text-[#F4F6FA] placeholder:text-[#A6AFBF]/40 text-sm resize-none"
                   />
                 </div>
 
                 {status === "error" && (
                   <p className="text-red-400 text-sm">
-                    Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.
+                    {t("contact.error")}
                   </p>
                 )}
 
@@ -198,8 +199,8 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                     <Send size={18} />
                   )}
                   {status === "loading"
-                    ? "Yuborilmoqda..."
-                    : "Zayavka Qoldirish"}
+                    ? t("contact.sending")
+                    : t("contact.submit")}
                 </button>
               </form>
             )}
@@ -212,19 +213,18 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
           <FadeUp delay={0.2}>
             <div className="bg-[#14171C] border border-[#A6AFBF]/15 rounded-sm p-8 h-full">
               <h3 className="font-mono text-xs tracking-[0.18em] uppercase text-[#F2B33D] mb-2">
-                KONTAKT MA'LUMOTLAR
+                {t("contact.contactInfoTitle")}
               </h3>
               <div className="accent-line w-12 mb-6" />
               <p className="text-sm text-[#A6AFBF] mb-8 leading-relaxed">
-                Konstruksiya buyurtma qilish yoki savol berish uchun quyidagi
-                ma'lumotlar orqali bog'lanishingiz mumkin.
+                {t("contact.contactInfoDesc")}
               </p>
 
               <div className="space-y-5">
                 {contactInfo.map(
-                  ({ icon: Icon, label, value, href, highlight }) => (
+                  ({ icon: Icon, labelKey, valueKey, href, highlight }) => (
                     <a
-                      key={label}
+                      key={labelKey}
                       href={href}
                       target={href.startsWith("http") ? "_blank" : undefined}
                       rel="noopener noreferrer"
@@ -235,7 +235,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                       </div>
                       <div>
                         <p className="font-mono text-[10px] tracking-widest text-[#A6AFBF] uppercase mb-0.5">
-                          {label}
+                          {t(labelKey)}
                         </p>
                         <p
                           className={`text-sm font-medium leading-snug transition-colors ${
@@ -244,7 +244,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
                               : "text-[#F4F6FA] group-hover:text-[#F2B33D]"
                           }`}
                         >
-                          {value}
+                          {t(valueKey)}
                         </p>
                       </div>
                     </a>
@@ -263,7 +263,7 @@ const ContactSection = ({ className = "" }: ContactSectionProps) => {
               style={{ border: 0, borderRadius: 12 }}
               allowFullScreen
               loading="lazy"
-              title="ZONT MODUL manzili"
+              title={t("contact.mapTitle")}
             ></iframe>
           </FadeUp>
         </div>

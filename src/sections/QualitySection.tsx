@@ -1,10 +1,12 @@
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 interface QualitySectionProps {
   className?: string;
 }
 
 const QualitySection = ({ className = "" }: QualitySectionProps) => {
+  const { t } = useTranslation();
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -25,7 +27,7 @@ const QualitySection = ({ className = "" }: QualitySectionProps) => {
         <div className="max-w-[32vw] lg:max-w-[400px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
-              SIFAT
+              {t("quality.title")}
             </h2>
           </FadeUp>
 
@@ -35,7 +37,7 @@ const QualitySection = ({ className = "" }: QualitySectionProps) => {
 
           <FadeUp delay={0.25}>
             <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[30vw] lg:max-w-[400px]">
-              Har bir detal tekshiruvdan o'tadi. Qoplamalar uchun kafolat.
+              {t("quality.desc")}
             </p>
           </FadeUp>
         </div>
@@ -45,7 +47,7 @@ const QualitySection = ({ className = "" }: QualitySectionProps) => {
       <div className="hidden lg:block absolute right-[7vw] top-[44vh] w-[22vw]">
         <FadeUp delay={0.3}>
           <p className="text-right font-mono text-sm text-[#F2B33D] tracking-[0.12em]">
-            GOST 23118 | GOST 27772
+            {t("quality.standards")}
           </p>
         </FadeUp>
       </div>

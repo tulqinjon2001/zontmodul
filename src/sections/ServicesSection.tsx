@@ -1,29 +1,30 @@
 import { ClipboardList, Factory, Truck } from "lucide-react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 interface ServicesSectionProps {
   className?: string;
 }
 
 const ServicesSection = ({ className = "" }: ServicesSectionProps) => {
+  const { t } = useTranslation();
   const services = [
     {
       icon: ClipboardList,
-      title: "Loyiha va hisoblash",
-      description: "Texnik vazifa, 3D-model, detallashtirish.",
+      titleKey: "services.s1Title",
+      descriptionKey: "services.s1Desc",
     },
     {
       icon: Factory,
-      title: "Ishlab chiqarish",
-      description: "Metall konstruksiyalar, kosmik karkaslar, modul binolar.",
+      titleKey: "services.s2Title",
+      descriptionKey: "services.s2Desc",
     },
     {
       icon: Truck,
-      title: "Yetkazib berish va o'rnatish",
-      description: "O'zbekiston bo'ylab yetkazib berish va montaj.",
+      titleKey: "services.s3Title",
+      descriptionKey: "services.s3Desc",
     },
   ];
-
   return (
     <section
       id="services"
@@ -70,7 +71,7 @@ const ServicesSection = ({ className = "" }: ServicesSectionProps) => {
         <div className="mb-12 lg:mb-16">
           <FadeUp delay={0}>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F6FA] uppercase tracking-tight mb-4">
-              XIZMATLAR
+              {t("services.title")}
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
@@ -78,27 +79,26 @@ const ServicesSection = ({ className = "" }: ServicesSectionProps) => {
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="text-base lg:text-lg text-[#A6AFBF] max-w-[600px]">
-              Loyiha, ishlab chiqarish, yetkazib berish va o'rnatish — to'liq
-              siklda xizmat.
+              {t("services.subtitle")}
             </p>
           </FadeUp>
         </div>
 
         {/* Service Cards — stagger */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map(({ icon: Icon, title, description }, i) => (
+          {services.map(({ icon: Icon, titleKey, descriptionKey }, i) => (
             <FadeUp
-              key={title}
+              key={titleKey}
               delay={i * 0.15}
               className="service-card p-6 lg:p-8 rounded-sm"
             >
               <div className="accent-line w-10 mb-6" />
               <Icon size={32} className="text-[#F2B33D] mb-4" />
               <h3 className="font-display text-xl font-semibold text-[#F4F6FA] mb-3">
-                {title}
+                {t(titleKey)}
               </h3>
               <p className="text-sm text-[#A6AFBF] leading-relaxed">
-                {description}
+                {t(descriptionKey)}
               </p>
             </FadeUp>
           ))}

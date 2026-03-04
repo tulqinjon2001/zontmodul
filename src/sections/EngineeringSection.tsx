@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 interface EngineeringSectionProps {
   className?: string;
 }
 
 const EngineeringSection = ({ className = "" }: EngineeringSectionProps) => {
+  const { t } = useTranslation();
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -23,7 +26,7 @@ const EngineeringSection = ({ className = "" }: EngineeringSectionProps) => {
         {/* Headline Block */}
         <div className="max-w-[40vw] lg:max-w-[520px]">
           <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
-            MUHANDISLIK
+            {t("engineering.title")}
           </h2>
 
           {/* Accent Line */}
@@ -31,7 +34,7 @@ const EngineeringSection = ({ className = "" }: EngineeringSectionProps) => {
 
           {/* Body */}
           <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[34vw] lg:max-w-[460px]">
-            Hisoblash, 3D-modeling, detallashtirish — bitta markazda.
+            {t("engineering.desc")}
           </p>
         </div>
       </div>
@@ -39,7 +42,7 @@ const EngineeringSection = ({ className = "" }: EngineeringSectionProps) => {
       {/* Right Side Stat */}
       <div className="hidden lg:block absolute right-[7vw] top-[44vh] w-[26vw]">
         <p className="text-right font-mono text-sm text-[#F2B33D] tracking-[0.12em]">
-          ISO 9001 • SNiP/MMK standartlari
+          {t("engineering.standards")}
         </p>
       </div>
     </section>

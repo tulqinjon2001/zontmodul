@@ -1,17 +1,18 @@
 import { Zap, Truck, RefreshCw } from "lucide-react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 interface ModularSectionProps {
   className?: string;
 }
 
 const ModularSection = ({ className = "" }: ModularSectionProps) => {
+  const { t } = useTranslation();
   const features = [
-    { icon: Zap, text: "Tez montaj" },
-    { icon: Truck, text: "Transport oson" },
-    { icon: RefreshCw, text: "Qayta ishlatish mumkin" },
+    { icon: Zap, textKey: "modular.feature1" },
+    { icon: Truck, textKey: "modular.feature2" },
+    { icon: RefreshCw, textKey: "modular.feature3" },
   ];
-
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -32,7 +33,7 @@ const ModularSection = ({ className = "" }: ModularSectionProps) => {
         <div className="max-w-[44vw] lg:max-w-[580px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
-              MODUL BINOLAR
+              {t("modular.title")}
             </h2>
           </FadeUp>
 
@@ -42,7 +43,7 @@ const ModularSection = ({ className = "" }: ModularSectionProps) => {
 
           <FadeUp delay={0.25}>
             <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[34vw] lg:max-w-[460px]">
-              Loyihadan ishga tushirishgacha — qisqa muddat.
+              {t("modular.desc")}
             </p>
           </FadeUp>
         </div>
@@ -54,11 +55,11 @@ const ModularSection = ({ className = "" }: ModularSectionProps) => {
           <div className="bg-[#0B0C0F]/55 border border-[#A6AFBF]/25 p-6">
             <div className="accent-line w-12 mb-6" />
             <div className="space-y-4">
-              {features.map(({ icon: Icon, text }) => (
-                <div key={text} className="flex items-center gap-3">
+              {features.map(({ icon: Icon, textKey }) => (
+                <div key={textKey} className="flex items-center gap-3">
                   <Icon size={18} className="text-[#F2B33D]" />
                   <span className="font-mono text-sm text-[#F4F6FA] tracking-wide">
-                    {text}
+                    {t(textKey)}
                   </span>
                 </div>
               ))}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Loader2, ChevronLeft, ChevronRight, X } from "lucide-react";
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
 
 interface WorksSectionProps {
@@ -16,6 +17,10 @@ interface Work {
   id: string;
   title: string;
   description: string;
+  title_uz?: string | null;
+  title_ru?: string | null;
+  description_uz?: string | null;
+  description_ru?: string | null;
   image_url: string | null;
   work_images?: WorkImage[];
 }
@@ -42,6 +47,7 @@ function WorkSlideshow({
   title: string;
   className?: string;
 }) {
+  const { t } = useTranslation();
   const [index, setIndex] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -79,7 +85,7 @@ function WorkSlideshow({
             <button
               key={i}
               type="button"
-              aria-label={`Slide ${i + 1}`}
+              aria-label={t("common.slide", { num: i + 1 })}
               onClick={(e) => {
                 e.stopPropagation();
                 setIndex(i);
@@ -96,6 +102,11 @@ function WorkSlideshow({
 }
 
 const WorksSection = ({ className = "" }: WorksSectionProps) => {
+  const { t, i18n } = useTranslation();
+  const getWorkTitle = (w: Work) =>
+    (i18n.language === "ru" && w.title_ru) ? w.title_ru : (w.title_uz || w.title || "");
+  const getWorkDescription = (w: Work) =>
+    (i18n.language === "ru" && w.description_ru) ? w.description_ru : (w.description_uz || w.description || "");
   const [works, setWorks] = useState<Work[]>([]);
   const [loading, setLoading] = useState(true);
   const [lightbox, setLightbox] = useState<{
@@ -187,7 +198,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
         <div className="mb-12 lg:mb-16">
           <FadeUp delay={0}>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#F4F6FA] uppercase tracking-tight mb-4">
-              BAJARILGAN ISHLAR
+              {t("works.title")}
             </h2>
           </FadeUp>
           <FadeUp delay={0.1}>
@@ -195,8 +206,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
           </FadeUp>
           <FadeUp delay={0.2}>
             <p className="text-base lg:text-lg text-[#A6AFBF] max-w-[600px]">
-              Bizning loyihalarimiz O'zbekistonning turli hududlarida
-              muvaffaqiyatli amalga oshirildi.
+              {t("works.subtitle")}
             </p>
           </FadeUp>
         </div>
@@ -214,6 +224,8 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
             {works.map((work, i) => {
               const images = getWorkImages(work);
               if (!images.length) return null;
+              const displayTitle = getWorkTitle(work);
+              const displayDesc = getWorkDescription(work);
               return (
                 <FadeUp
                   key={work.id}
@@ -222,23 +234,23 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
                   onClick={() => {
                     setLightbox({
                       images,
-                      title: work.title,
-                      description: work.description ?? "",
+                      title: displayTitle,
+                      description: displayDesc,
                     });
                     setLightboxIndex(0);
                   }}
                 >
                   <WorkSlideshow
                     images={images}
-                    title={work.title}
+                    title={displayTitle}
                     className="group-hover:scale-[1.02] transition-transform duration-500"
                   />
                   {/* Always visible overlay */}
                   <div className="work-card-overlay absolute inset-0 flex flex-col justify-end p-5 rounded-sm pointer-events-none">
                     <h3 className="font-display text-lg font-semibold text-[#F4F6FA] mb-1">
-                      {work.title}
+                      {displayTitle}
                     </h3>
-                    <p className="text-sm text-[#A6AFBF]">{work.description}</p>
+                    <p className="text-sm text-[#A6AFBF]">{displayDesc}</p>
                   </div>
                 </FadeUp>
               );
@@ -253,7 +265,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
             onClick={() => setLightbox(null)}
             role="dialog"
             aria-modal="true"
-            aria-label="Rasmni yopish"
+            aria-label={t("works.closeImage")}
           >
             <div
               className="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center"
@@ -263,7 +275,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
                 type="button"
                 onClick={() => setLightbox(null)}
                 className="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-20"
-                aria-label="Yopish"
+                aria-label={t("works.close")}
               >
                 <X size={24} />
               </button>
@@ -286,7 +298,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
                         )
                       }
                       className="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-colors"
-                      aria-label="Oldingi rasm"
+                      aria-label={t("works.prevImage")}
                     >
                       <ChevronLeft size={28} />
                     </button>
@@ -298,7 +310,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
                         )
                       }
                       className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-colors"
-                      aria-label="Keyingi rasm"
+                      aria-label={t("works.nextImage")}
                     >
                       <ChevronRight size={28} />
                     </button>
@@ -318,7 +330,7 @@ const WorksSection = ({ className = "" }: WorksSectionProps) => {
                           ? "bg-[#F2B33D]"
                           : "bg-white/50 hover:bg-white/70"
                       }`}
-                      aria-label={`Rasm ${i + 1}`}
+                      aria-label={t("works.imageNum", { num: i + 1 })}
                     />
                   ))}
                 </div>

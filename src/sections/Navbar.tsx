@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
+  const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -22,10 +24,10 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { label: "Xizmatlar", id: "services" },
-    { label: "Ishlar", id: "works" },
-    { label: "Katalog", id: "katalog" },
-    { label: "Bog'lanish", id: "contact" },
+    { labelKey: "nav.services", id: "services" },
+    { labelKey: "nav.works", id: "works" },
+    { labelKey: "nav.katalog", id: "katalog" },
+    { labelKey: "nav.contact", id: "contact" },
   ];
 
   return (
@@ -49,26 +51,40 @@ const Navbar = () => {
               className="h-14 w-14 object-contain"
             />
             <span className="font-mono text-lg tracking-[0.12em] font-medium text-[#F4F6FA]">
-              ZONT MODUL
+              {t("common.brand")}
             </span>
           </button>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
                 className="text-sm text-[#A6AFBF] hover:text-[#F4F6FA] transition-colors duration-300"
               >
-                {link.label}
+                {t(link.labelKey)}
               </button>
             ))}
+            <div className="flex items-center gap-1 border-l border-[#A6AFBF]/30 pl-4">
+              <button
+                onClick={() => i18n.changeLanguage("uz")}
+                className={`px-2 py-1 text-xs font-medium rounded transition-colors ${i18n.language === "uz" ? "text-[#F2B33D] bg-[#F2B33D]/10" : "text-[#A6AFBF] hover:text-[#F4F6FA]"}`}
+              >
+                UZB
+              </button>
+              <button
+                onClick={() => i18n.changeLanguage("ru")}
+                className={`px-2 py-1 text-xs font-medium rounded transition-colors ${i18n.language === "ru" ? "text-[#F2B33D] bg-[#F2B33D]/10" : "text-[#A6AFBF] hover:text-[#F4F6FA]"}`}
+              >
+                RUS
+              </button>
+            </div>
             <button
               onClick={() => scrollToSection("contact")}
               className="btn-primary px-5 py-2.5 text-sm font-medium rounded-sm"
             >
-              Zayavka Qoldirish
+              {t("nav.leaveRequest")}
             </button>
           </div>
 
@@ -100,14 +116,28 @@ const Navbar = () => {
               onClick={() => scrollToSection(link.id)}
               className="text-2xl font-display font-semibold text-[#F4F6FA] hover:text-[#F2B33D] transition-colors"
             >
-              {link.label}
+              {t(link.labelKey)}
             </button>
           ))}
+          <div className="flex items-center gap-2 mt-2">
+            <button
+              onClick={() => { i18n.changeLanguage("uz"); setIsMobileMenuOpen(false); }}
+              className={`px-3 py-1.5 text-sm font-medium rounded ${i18n.language === "uz" ? "text-[#F2B33D] bg-[#F2B33D]/10" : "text-[#A6AFBF]"}`}
+            >
+              UZB
+            </button>
+            <button
+              onClick={() => { i18n.changeLanguage("ru"); setIsMobileMenuOpen(false); }}
+              className={`px-3 py-1.5 text-sm font-medium rounded ${i18n.language === "ru" ? "text-[#F2B33D] bg-[#F2B33D]/10" : "text-[#A6AFBF]"}`}
+            >
+              RUS
+            </button>
+          </div>
           <button
             onClick={() => scrollToSection("contact")}
             className="btn-primary px-8 py-3 text-lg font-medium rounded-sm mt-4"
           >
-            Zayavka Qoldirish
+            {t("nav.leaveRequest")}
           </button>
         </div>
       </div>

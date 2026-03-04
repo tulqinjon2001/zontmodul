@@ -1,10 +1,13 @@
 import FadeUp from "@/components/FadeUp";
+import { useTranslation } from "react-i18next";
 
 interface SpaceFrameSectionProps {
   className?: string;
 }
 
 const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
+  const { t } = useTranslation();
+  const specs = [t("spaceFrame.spec1"), t("spaceFrame.spec2"), t("spaceFrame.spec3")];
   return (
     <section className={`section-pinned ${className}`}>
       {/* Background Image */}
@@ -25,7 +28,7 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
         <div className="max-w-[46vw] lg:max-w-[620px]">
           <FadeUp delay={0}>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#F4F6FA] uppercase tracking-tight leading-[0.92]">
-              KOSMIK KARKASLAR
+              {t("spaceFrame.title")}
             </h2>
           </FadeUp>
 
@@ -35,24 +38,21 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
 
           <FadeUp delay={0.25}>
             <p className="text-base lg:text-lg text-[#A6AFBF] leading-relaxed max-w-[36vw] lg:max-w-[500px]">
-              Katta ochiqli binolar uchun optimal. Kam materiallar — maksimal
-              mustahkamlik.
+              {t("spaceFrame.desc")}
             </p>
           </FadeUp>
         </div>
 
         <FadeUp delay={0.35}>
           <div className="mt-10 space-y-3">
-            {["Kislovodsk tipi", "Yengil vazn", "Yuqori yuk ko'rsatkichi"].map(
-              (spec) => (
+            {specs.map((spec) => (
                 <div key={spec} className="flex items-center gap-3">
                   <div className="w-1.5 h-1.5 bg-[#F2B33D]" />
                   <span className="font-mono text-sm text-[#A6AFBF] tracking-wide">
                     {spec}
                   </span>
                 </div>
-              ),
-            )}
+              ))}
           </div>
         </FadeUp>
       </div>
@@ -61,7 +61,7 @@ const SpaceFrameSection = ({ className = "" }: SpaceFrameSectionProps) => {
       <div className="hidden lg:block absolute right-[7vw] top-[44vh] w-[26vw]">
         <FadeUp delay={0.3}>
           <p className="text-right text-lg text-[#F4F6FA] font-medium">
-            Har qanday maydonda tez va yengil yechim.
+            {t("spaceFrame.tagline")}
           </p>
         </FadeUp>
       </div>
