@@ -10,7 +10,7 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: typeof localStorage !== 'undefined' ? localStorage.getItem('i18n_lng') || 'uz' : 'uz',
+  lng: typeof localStorage !== 'undefined' ? localStorage.getItem('i18n_lng') || 'ru' : 'ru',
   fallbackLng: 'uz',
   supportedLngs: ['uz', 'ru'],
   interpolation: {
